@@ -1,4 +1,8 @@
 ﻿using Autofac;
+using Autofac.Extras.DynamicProxy;
+using Castle.DynamicProxy;
+using MobilivaCase.Business.Mapping;
+using MobilivaCase.Core.Utilities.Interceptors;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,7 +15,7 @@ namespace MobilivaCase.Business.DependencyResolvers.Autofac
     {
         protected override void Load(ContainerBuilder builder)
         {
-
+            
             builder.RegisterType<CustomerManager>().As<ICustomerService>().SingleInstance();
             builder.RegisterType<EfCustomerDal>().As<ICustomerDal>().SingleInstance();
 

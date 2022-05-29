@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using MobilivaCase.Core.Entities;
+using MobilivaCase.Core.Entities.Abstract;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,16 +17,44 @@ namespace MobilivaCase.Core.DataAccess.EntityFramework
         protected TContext _dbContext;
 
         public EfEntityFrameworkBase(TContext dbContext) => _dbContext = dbContext;
-        
-        public void Add(TEntity entity) => Add(entity);
-        public void Delete(TEntity entity) => Delete(entity);
-        public void Update(TEntity entity) => Update(entity);
-        public TEntity Get(Expression<Func<TEntity, bool>> filter)=> _dbContext.Set<TEntity>().SingleOrDefault(filter);
-        public IQueryable<TEntity> GetAll(Expression<Func<TEntity, bool>> filter = null)
-            => filter == null ? _dbContext.Set<TEntity>() : _dbContext.Set<TEntity>().Where(filter);
-        public void Save() => _dbContext.SaveChanges();
 
+        public void Add(TEntity entity)
+        {
 
+            var addedEntity = _dbContext.Entry(entity);
+            addedEntity.State = EntityState.Added;
+            _dbContext.SaveChanges();
+
+        }
+
+        public void Delete(TEntity entity)
+        {
+            var deleteEntity = _dbContext.Entry(entity);
+            deleteEntity.State = EntityState.Deleted;
+            _dbContext.SaveChanges();
+
+        }
+
+        public TEntity Get(Expression<Func<TEntity, bool>> filter)
+        {
+
+            return _dbContext.Set<TEntity>().SingleOrDefault(filter);
+
+        }
+
+        public List<TEntity> GetAll(Expression<Func<TEntity, bool>> filter = null)
+        {
+            return filter == null ? _dbContext.Set<TEntity>().ToList() : _dbContext.Set<TEntity>().Where(filter).ToList();
+
+        }
+
+        public void Update(TEntity entity)
+        {
+            var updateEntity = _dbContext.Entry(entity);
+            updateEntity.State = EntityState.Modified;
+            _dbContext.SaveChanges();
+
+        }
 
     }
 }

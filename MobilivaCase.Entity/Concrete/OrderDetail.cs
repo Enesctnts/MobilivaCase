@@ -15,7 +15,9 @@ namespace MobilivaCase.Entity.Concrete
     {
 
         [Key]
-        public string Id { get; set; }
+        [Column(Order = 1)]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int Id { get; set; }
         public decimal UnitPrice { get; set; }
         public string ProductId { get; set; }
         public string OrderId { get; set; }
@@ -29,10 +31,6 @@ namespace MobilivaCase.Entity.Concrete
         public virtual Order Order { get; set; }
 
 
-        //Conctucter'da ilk değer ataması
-        public OrderDetail()
-        {
-            Id = Guid.NewGuid().ToString();
-        }
+       
     }
 }

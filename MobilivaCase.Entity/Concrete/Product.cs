@@ -15,10 +15,12 @@ namespace MobilivaCase.Entity.Concrete
     {
 
         [Key]
+        [Column(Order = 1)]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public string Id { get; set; }
         public string Description { get; set; }
         public string Category { get; set; }
-        public DateTime CreateDate { get; set; }
+        public DateTime CreateDate { get; set; }=DateTime.Now;
         public decimal UnitPrice { get; set; }
         public DateTime UpdateDate { get; set; }
         public int Unit { get; set; }
@@ -27,14 +29,6 @@ namespace MobilivaCase.Entity.Concrete
 
         //İlişkiler
         public virtual ICollection<OrderDetail> OrderDetails { get; set; }
-
-
-        //Conctucter'da ilk değer ataması
-        public Product()
-        {
-            Id = Guid.NewGuid().ToString();
-            CreateDate = DateTime.Now;
-        }
 
 
     }

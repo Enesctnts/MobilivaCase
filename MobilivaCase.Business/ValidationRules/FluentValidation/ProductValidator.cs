@@ -13,7 +13,6 @@ namespace MobilivaCase.Business.ValidationRules.FluentValidation
         public ProductValidator()
         {
             RuleFor(p => p.Description).NotEmpty();
-            RuleFor(p => p.Category).NotEmpty();
             RuleFor(p => p.UnitPrice).NotEmpty();
             RuleFor(p => p.Unit).NotEmpty();
             RuleFor(p => p.Description).MinimumLength(2);

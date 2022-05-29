@@ -14,20 +14,20 @@ namespace MobilivaCase.Entity.Concrete
     public class Order : IEntity
     {
         [Key]
-        public string Id { get; set; }
+        [Column(Order = 1)]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int Id { get; set; }
         public string CustomerName { get; set; }
         public string CustomerEmail { get; set; }
         public string CustomerGSM { get; set; }
         public decimal TotalAmount { get; set; }
 
 
+
+
         //Bu siparişin içeriğinde neler var? Ne almış?
         public virtual ICollection<OrderDetail> OrderDetails { get; set; } //Navigation property.
 
-        public Order()
-        {
-            Id = Guid.NewGuid().ToString();
-        }
 
     }
 }

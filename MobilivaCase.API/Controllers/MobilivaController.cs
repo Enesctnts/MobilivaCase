@@ -13,12 +13,12 @@ namespace MobilivaCase.API.Controllers
     [ApiController]
     public class MobilivaController : ControllerBase
     {
-        private readonly IGetProductService _getProductService;
+        private readonly IProductService _getProductService;
         private readonly IMemoryCache _memoryCache;
-        private readonly ICreateOrderService _createOrderService;
+        private readonly IOrderService _createOrderService;
 
 
-        public MobilivaController(IGetProductService getProductService, IMemoryCache memoryCache, ICreateOrderService createOrderService)
+        public MobilivaController(IProductService getProductService, IMemoryCache memoryCache, IOrderService createOrderService)
         {
             _getProductService = getProductService;
             _memoryCache = memoryCache;
@@ -28,31 +28,23 @@ namespace MobilivaCase.API.Controllers
         [HttpGet("GetProducts")]
         public IActionResult GetProduct(string category)
         {
-            var key = category;
-            if (string.IsNullOrEmpty(category))
+            var result = _getProductService.OnProcess();
+            if (result!=null)
             {
-                key = "Product";
+                return Ok(result);
             }
-            if (_memoryCache.TryGetValue(key, out object list))
-            {
-                return Ok(list);
-            }
-            else
-            {
-                var response = _getProductService.OnProcess(category);
-                _memoryCache.Set(key, response.Data, new MemoryCacheEntryOptions
-                {
-                    AbsoluteExpiration = DateTime.Now.AddSeconds(20),
-                    Priority = CacheItemPriority.Normal
-                });
-                return Ok(response);
-            }
+            return BadRequest(result);
         }
         [HttpPost("CreateOrder")]
         public IActionResult CreateOrder(CreateOrderRequestDto createOrderRequestDto)
         {
-            var response = _createOrderService.OnProcess(createOrderRequestDto);
-            return Ok(response);
+            //var result = _createOrderService.OnProcess(createOrderRequestDto);
+            var result = _carService.Add(car);
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result);
         }
     }
 }

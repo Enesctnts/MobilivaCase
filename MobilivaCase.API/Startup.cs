@@ -8,11 +8,16 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using MobilivaCase.Core.Extensions;
 using MobilivaCase.DataAccess.Context;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using MobilivaCase.Core.Utilities.IoC;
+using MobilivaCase.Core.DependencyResolvers;
+using MobilivaCase.Business.Mapping;
+using AutoMapper;
 
 namespace MobilivaCase.API
 {
@@ -34,11 +39,12 @@ namespace MobilivaCase.API
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "MobilivaCase.API", Version = "v1" });
             });
-
             services.AddDbContext<MobilivaDbContext>(opt =>
             {
                 opt.UseMySql(Configuration.GetConnectionString("sqlConnection"));
             });
+
+            
 
             services.AddScoped<IOrderDetailRepository, EfOrderDetailRepository>();
             services.AddScoped<IOrderRepository, EfOrderRepository>();
@@ -53,6 +59,13 @@ namespace MobilivaCase.API
             services.AddScoped<ISmtpConfiguration, SmtpConfiguration>();
             services.AddScoped<IPublisherService, PublisherManager>();
             services.AddScoped<IConsumerService, ConsumerManager>();
+
+            services.AddAutoMapper(typeof(MapProfile));
+            
+
+            services.AddDependencyResolvers(new ICoreModule[]{
+                new CoreModule()
+            });
 
 
         }

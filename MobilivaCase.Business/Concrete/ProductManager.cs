@@ -1,4 +1,5 @@
 ﻿using MobilivaCase.Business.Abstract;
+using MobilivaCase.Core.Aspects.Autofac.Caching;
 using MobilivaCase.DataAccess.Abstract;
 using MobilivaCase.Entity.Concrete;
 using MobilivaCase.Entity.DTOs;
@@ -11,15 +12,18 @@ using System.Threading.Tasks;
 
 namespace MobilivaCase.Business.Concrete
 {
-    public class GetProductService : IGetProductService
+    public class ProductManager : IProductService
     {
         private readonly IProductDal _productDal;
-        public GetProductService(IProductDal productDal)
+        public ProductManager(IProductDal productDal)
         {
             _productDal = productDal;
-        }
+        }  
+
+        [CacheAspect]
         public ApiResponseDto<Product> OnProcess(string request = null)
         {
+           
             var response = new ApiResponseDto<Product>();
             try
             {

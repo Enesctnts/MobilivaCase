@@ -1,4 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using MobilivaCase.Core.CrossCuttingConcerns.Caching;
+using MobilivaCase.Core.CrossCuttingConcerns.Caching.Microsoft;
 using MobilivaCase.Core.Utilities.IoC;
 using System;
 using System.Collections.Generic;
@@ -15,9 +17,7 @@ namespace MobilivaCase.Core.DependencyResolvers
         public void Load(IServiceCollection serviceCollection)
         {
             serviceCollection.AddMemoryCache();//Alttaklerle ayni işi yapıyor. Sadece MemoryCache hazır bir yapi oldugu için bunu bize microsoft yazmış biz direk bu şekilde yapınca arkada tarafta instance sini oluşturuyor. IMemoryCache  istenildiği zaman gelip bakıyor ve burada eklendiğini görünce arka tarafta oluşan instance kullanıyor.
-            serviceCollection.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             serviceCollection.AddSingleton<ICacheManager, MemoryCacheManager>();
-            serviceCollection.AddSingleton<Stopwatch>();
 
         }
     }
