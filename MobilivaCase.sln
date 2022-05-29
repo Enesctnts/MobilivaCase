@@ -1,0 +1,49 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.32106.194
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MobilivaCase.API", "MobilivaCase.API\MobilivaCase.API.csproj", "{6E841E8B-7400-429F-AD5F-8E5034DC02A5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MobilivaCase.Entity", "MobilivaCase.Entity\MobilivaCase.Entity.csproj", "{30DE0349-0D6E-4FF7-B012-448152D871D5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MobilivaCase.DataAccess", "MobilivaCase.DataAccess\MobilivaCase.DataAccess.csproj", "{7D8590A4-648A-47E8-8756-D181623A6A31}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MobilivaCase.Business", "MobilivaCase.Business\MobilivaCase.Business.csproj", "{5B132C0F-75BE-4A4D-A32F-0448128D047E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MobilivaCase.Core", "MobilivaCase.Core\MobilivaCase.Core.csproj", "{D7234126-A867-4C82-90BE-CD269126C601}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{6E841E8B-7400-429F-AD5F-8E5034DC02A5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6E841E8B-7400-429F-AD5F-8E5034DC02A5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6E841E8B-7400-429F-AD5F-8E5034DC02A5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6E841E8B-7400-429F-AD5F-8E5034DC02A5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{30DE0349-0D6E-4FF7-B012-448152D871D5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{30DE0349-0D6E-4FF7-B012-448152D871D5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{30DE0349-0D6E-4FF7-B012-448152D871D5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{30DE0349-0D6E-4FF7-B012-448152D871D5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7D8590A4-648A-47E8-8756-D181623A6A31}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7D8590A4-648A-47E8-8756-D181623A6A31}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7D8590A4-648A-47E8-8756-D181623A6A31}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7D8590A4-648A-47E8-8756-D181623A6A31}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5B132C0F-75BE-4A4D-A32F-0448128D047E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5B132C0F-75BE-4A4D-A32F-0448128D047E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5B132C0F-75BE-4A4D-A32F-0448128D047E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5B132C0F-75BE-4A4D-A32F-0448128D047E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D7234126-A867-4C82-90BE-CD269126C601}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D7234126-A867-4C82-90BE-CD269126C601}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D7234126-A867-4C82-90BE-CD269126C601}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D7234126-A867-4C82-90BE-CD269126C601}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {CCE70CFB-1D18-4E66-B4D6-8513B54A1B68}
+	EndGlobalSection
+EndGlobal
