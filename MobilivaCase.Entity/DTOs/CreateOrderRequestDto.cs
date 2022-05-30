@@ -13,7 +13,7 @@ namespace MobilivaCase.Entity.DTOs
         public string CustomerName { get; set; }
         public string CustomerEmail { get; set; }
         public string CustomerGSM { get; set; }
-        public List<ProductDetail> ProductDetails { get; set; }
+        public List<ProductDetail>? ProductDetails { get; set; }
 
     }
 

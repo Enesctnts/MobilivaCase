@@ -6,7 +6,7 @@ namespace MobilivaCase.Entity.DTOs
 {
     public class ProductDetail
     {
-        public string ProductId { get; set; }
+        public int ProductId { get; set; }
         public decimal UnitPrice { get; set; }
         public int Amount { get; set; }
     }

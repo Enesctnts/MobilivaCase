@@ -17,13 +17,20 @@ namespace MobilivaCase.Entity.Concrete
         [Key]
         [Column(Order = 1)]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public string Id { get; set; }
-        public string Description { get; set; }
-        public string Category { get; set; }
+        public int Id { get; set; }
+
+        [Required]
+        [StringLength(250)]
+        public string Description { get; set; } = string.Empty;
+
+        [Required]
+        [StringLength(100)]
+        public string Category { get; set; } = string.Empty;
+
         public DateTime CreateDate { get; set; }=DateTime.Now;
-        public decimal UnitPrice { get; set; }
         public DateTime UpdateDate { get; set; }
         public int Unit { get; set; }
+        public decimal UnitPrice { get; set; }
         public bool Status { get; set; }
 
 
