@@ -19,8 +19,8 @@ namespace MobilivaCase.Entity.Concrete
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
         public decimal UnitPrice { get; set; }
-        public string ProductId { get; set; }
-        public string OrderId { get; set; }
+        public int ProductId { get; set; }
+        public int OrderId { get; set; }
 
         //İlişkiler
 

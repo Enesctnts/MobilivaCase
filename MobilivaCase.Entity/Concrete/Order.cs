@@ -17,12 +17,21 @@ namespace MobilivaCase.Entity.Concrete
         [Column(Order = 1)]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
-        public string CustomerName { get; set; }
-        public string CustomerEmail { get; set; }
+
+        [Required]
+        [StringLength(50)]
+        public string CustomerName { get; set; } = string.Empty;
+
+        [Required]
+        [StringLength(100)]
+        public string CustomerEmail { get; set; } = string.Empty;
+
+        [Required]
+        [StringLength(11)]
         public string CustomerGSM { get; set; }
         public decimal TotalAmount { get; set; }
-
-
+        
+       
 
 
         //Bu siparişin içeriğinde neler var? Ne almış?
