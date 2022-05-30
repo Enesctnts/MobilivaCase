@@ -18,12 +18,12 @@ namespace MobilivaCase.Core.DataAccess.EntityFramework
 
         public EfEntityFrameworkBase(TContext dbContext) => _dbContext = dbContext;
 
-        public void Add(TEntity entity)
+        public async virtual void AddAsync(TEntity entity)
         {
 
             var addedEntity = _dbContext.Entry(entity);
             addedEntity.State = EntityState.Added;
-            _dbContext.SaveChanges();
+            await _dbContext.SaveChangesAsync();
 
         }
 
@@ -31,7 +31,7 @@ namespace MobilivaCase.Core.DataAccess.EntityFramework
         {
             var deleteEntity = _dbContext.Entry(entity);
             deleteEntity.State = EntityState.Deleted;
-            _dbContext.SaveChanges();
+            _dbContext.SaveChangesAsync();
 
         }
 
@@ -52,7 +52,7 @@ namespace MobilivaCase.Core.DataAccess.EntityFramework
         {
             var updateEntity = _dbContext.Entry(entity);
             updateEntity.State = EntityState.Modified;
-            _dbContext.SaveChanges();
+            _dbContext.SaveChangesAsync();
 
         }
 

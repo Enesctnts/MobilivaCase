@@ -1,10 +1,4 @@
 ﻿using MobilivaCase.Business.Abstract;
-using MobilivaCase.Business.Constants;
-using MobilivaCase.Business.ValidationRules.FluentValidation;
-using MobilivaCase.Core.Aspects.Autofac.Caching;
-using MobilivaCase.Core.Aspects.Autofac.Validation;
-using MobilivaCase.Core.Utilities.Business;
-using MobilivaCase.Core.Utilities.Result;
 using MobilivaCase.DataAccess.Abstract;
 using MobilivaCase.Entity.Concrete;
 using MobilivaCase.Entity.DTOs;
@@ -15,6 +9,8 @@ using System.Text;
 using System.Threading.Tasks;
 using Mapster;
 using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
+using MobilivaCase.Core.Utilities.Results;
 
 namespace MobilivaCase.Business.Concrete
 {
@@ -22,82 +18,90 @@ namespace MobilivaCase.Business.Concrete
     {
         private readonly IProductDal _productDal;
         private readonly IOrderDal _orderDal;
+        private readonly IOrderDetailDal _orderDetailDal;
         private readonly IMapper _mapper;
-        private readonly ISmtpConfiguration _smtpConfig;
-        private readonly IPublisherService _publisherService;
+        //private readonly ISmtpConfiguration _smtpConfig;
+        //private readonly IPublisherService _publisherService;
 
 
-        public OrderManager(IProductDal productDal, IOrderDal orderDal, ISmtpConfiguration smtpConfig, IPublisherService publisherService, IMapper mapper)
+        public OrderManager(IProductDal productDal, IOrderDal orderDal,/* ISmtpConfiguration smtpConfig, IPublisherService publisherService,*/ IMapper mapper, IOrderDetailDal orderDetailDal)
         {
             _productDal = productDal;
             _orderDal = orderDal;
-            _smtpConfig = smtpConfig;
-            _publisherService = publisherService;
             _mapper = mapper;
+            _orderDetailDal = orderDetailDal;
+            //_smtpConfig = smtpConfig;
+            //_publisherService = publisherService;
         }
-        private MailMessageData PrepareMessages(PostMailViewModel post, string email)
+        //private MailMessageData PrepareMessages(PostMailViewModel post, string email)
+        //{
+        //    var message = new MailMessageData()
+        //    {
+        //        To = email.ToString(),
+        //        From = _smtpConfig.User,
+        //        Subject = post.Post.Title,
+        //        Body = post.Post.Content
+        //    };
+
+        //    return message;
+        //}
+
+
+        public async Task<ApiResponse> CreateOrder([FromBody] CreateOrderRequestDto createOrderRequest)
         {
-            var message = new MailMessageData()
+            ApiResponse apiResponse = new ApiResponse();
+            OrderDetail orderDetail = new OrderDetail();
+
+            var order = _mapper.Map<Order>(createOrderRequest);
+
+
+
+            if (createOrderRequest.ProductDetails == null)
             {
-                To = email.ToString(),
-                From = _smtpConfig.User,
-                Subject = post.Post.Title,
-                Body = post.Post.Content
-            };
+                apiResponse.ResultMessage = "Ürün Detay Bilgileri Zorunludur";
+                apiResponse.Status = ApiResponse.StatusCode.Failed;
+                apiResponse.ErrorCode = 400;
+                //return Task.FromResult(new ApiResponse()); 
+                return apiResponse; 
+            }
 
-            return message;
-        }
-
-        [CacheRemoveAspect("IProductService.Get")]
-        public int Add(CreateOrderRequestDto orderRequest)
-        {
-
-            var orderList = _orderDal.GetAll();
-            decimal TotalPrice = 0;
-            var post = new PostMailViewModel();
+            order.TotalAmount = createOrderRequest.ProductDetails.Sum(x => x.Amount);
+            _orderDal.AddAsync(order);
 
 
-            var detail = new OrderDetail();
-            var order1 = new Order();
-            foreach (var product in orderRequest.ProductDetails)
+
+
+            foreach (var productDetail in createOrderRequest.ProductDetails)
             {
-                var pro = _productDal.GetAll().FirstOrDefault(x => x.Id == product.ProductId);
-                if (pro!=null)
+                var getProduct = _productDal.Get(x => x.Id == productDetail.ProductId);
+                if (productDetail.ProductId == 0 || productDetail.Amount == 0 || productDetail.UnitPrice == 0)
                 {
-                    var detailPrice = product.Amount * product.UnitPrice;
-                    TotalPrice += detailPrice;
-                    detail.Product = pro;
-                    detail.UnitPrice = detailPrice;
-                    order1.OrderDetails.Add(detail);
+                    apiResponse.ResultMessage = "Ürün Detay Bilgileri Geçersiz";
+                    apiResponse.Status = ApiResponse.StatusCode.Failed;
+                    apiResponse.ErrorCode = 400;
+                    //return Task.FromResult(new ApiResponse()); 
+                    return apiResponse;
                 }
-                
-                
-            }
-            var order = _mapper.Map<Order>(orderRequest);
-            _orderDal.Add(order);
 
-            post.Post.Content = "Sipariş Başarılı bir şekilde oluşturulmuştur.";
-            post.Post.Title = "Sipariş Detayı";
-            //_publisherService.Enqueue(
-            //                          PrepareMessages(post, request.CustomerEmail),
-            //                          RabbitMQConsts.RabbitMqConstsList.QueueNameEmail.ToString()
-            //                        );
-            return order.Id;
+                orderDetail.OrderId = order.Id;
+                orderDetail.ProductId = productDetail.ProductId;
+                orderDetail.UnitPrice = productDetail.UnitPrice;
+
+            }
+            _orderDetailDal.AddAsync(orderDetail);
+
+            //_rabbitMQProducer.Send(name, mail, "Sipariş oluşturuldu");
+
+
+            apiResponse.ResultMessage = "Success";
+            apiResponse.Status = ApiResponse.StatusCode.Success;
+            apiResponse.ErrorCode = 0;
+            apiResponse.Data = order.Id;
+
+            //return (ApiResponse)apiResponse.Data;
+            return apiResponse;
         }
 
-        #region BusinessRules
 
-        private IResult CheckIfGsmExists(string tel)
-        {
-            var result = _orderDal.GetAll(c => c.CustomerGSM == tel).Any();
-            if (result)
-            {
-                return new ErrorResult(Messages.NumberAlreadyExists);
-            }
-
-            return new SuccessResult();
-        }
-
-        #endregion
     }
 }
