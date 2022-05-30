@@ -1,17 +1,18 @@
-﻿using MobilivaCase.Core.Utilities.Result;
-using MobilivaCase.Entity.Concrete;
+﻿using MobilivaCase.Entity.Concrete;
 using MobilivaCase.Entity.DTOs;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
+using MobilivaCase.Core.Utilities.Results;
 
 namespace MobilivaCase.Business.Abstract
 {
     public interface IOrderService
     {
-        int Add(CreateOrderRequestDto orderRequest);
-
+       Task<ApiResponse> CreateOrder([FromBody] CreateOrderRequestDto createOrderRequest); 
     }
 }
+ 
